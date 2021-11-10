@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentManager
-{   
+{
     class StudentManagement
-    { 
+    {
         /// <summary>
         /// Thêm 1 sinh viên
         /// </summary>
@@ -17,23 +17,20 @@ namespace StudentManager
             student.Id = students.Count != 0 ? IdStudentAutoIncreased(students) : 0;
             Console.WriteLine("Nhập tên sinh viên: ");
             student.Name = Console.ReadLine();
-            while(student.Name =="")
+            while (student.Name == "")
             {
                 Console.Write("Sai. Nhập lại: ");
                 student.Name = Console.ReadLine();
             }
-            Console.Write("Nhập giới tính(nam/nữ): ");
-            student.Sx = Console.ReadLine();
-            while (student.Sx == "")
-            {   
-                Console.WriteLine("Sai. Nhập lại: ");
-                student.Sx = Console.ReadLine();
-            }
-            while(student.Sx!="nam" && student.Sx !="nữ")
+            Console.Write("Nhập giới tính(1: nam/0: nữ): ");
+            int sx = InputIntException();
+            while (CheckSx(sx))
             {
                 Console.WriteLine("Sai. Nhập lại: ");
-                student.Sx = Console.ReadLine();
+                sx = InputIntException();
             }
+            student.Sx = sx == 1 ? "Nam" : "Nữ";
+            
             Console.WriteLine("Nhập tuổi sinh viên: ");
             student.Age = InputIntException();
             Console.WriteLine("Nhập điểm toán: ");
@@ -43,23 +40,34 @@ namespace StudentManager
             Console.WriteLine("Nhập điểm hóa: ");
             student.ChemistryScore = InputDoubleException();
             student.AvgScore = CalAvgScore(student);
-            if(student.AvgScore>=8)
+            if (student.AvgScore >= 8)
             {
                 student.Academic = "Giỏi";
             }
-            else if(student.AvgScore>=6.5)
+            else if (student.AvgScore >= 6.5)
             {
                 student.Academic = "Khá";
             }
-            else if(student.AvgScore>=5)
+            else if (student.AvgScore >= 5)
             {
                 student.Academic = "Trung bình";
-            }    
+            }
             else
             {
                 student.Academic = "Yếu";
             }
             return student;
+        }
+        public bool CheckSx(int sx)
+        {
+            if(sx==1||sx==0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         /// <summary>
         /// Kiểm tra dữ liệu số nguyên nhập vào
@@ -68,7 +76,7 @@ namespace StudentManager
         public int InputIntException()
         {
             dynamic tmp = Console.ReadLine();
-            while(!int.TryParse(tmp, out int value))
+            while (!int.TryParse(tmp, out int value))
             {
                 Console.Write("Sai. Nhập lại: ");
                 tmp = Console.ReadLine();
@@ -88,7 +96,7 @@ namespace StudentManager
                 tmp = Console.ReadLine();
             }
             tmp = double.Parse(tmp);
-            if(tmp<0 || tmp >10)
+            if (tmp < 0 || tmp > 10)
             {
                 Console.Write("Sai. Nhập lại(0-10):");
                 tmp = InputDoubleException();
@@ -100,9 +108,9 @@ namespace StudentManager
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public double CalAvgScore(Student s) 
+        public double CalAvgScore(Student s)
         {
-            return (s.MathScore + s.PhisicalScore + s.ChemistryScore) / 3;
+            return Math.Round(((s.MathScore + s.PhisicalScore + s.ChemistryScore) / 3),2);
         }
         /// <summary>
         /// Id tự động tăng
@@ -123,12 +131,12 @@ namespace StudentManager
             List<Student> students = new List<Student>();
             Console.WriteLine("Nhập số lượng nhân viên: ");
             int size = InputIntException();
-            for(int i = 0; i<size; i++)
+            for (int i = 0; i < size; i++)
             {
                 students.Add(InputStudent(students));
             }
             return students;
-            
+
         }
         /// <summary>
         /// Hiện list sinh viên
@@ -149,31 +157,28 @@ namespace StudentManager
             Console.WriteLine("Nhập id sinh viên: ");
             int id = InputIntException();
             Student student = students.Find(s => s.Id == id);
-            if(student!=null)
+            if (student != null)
             {
                 Console.WriteLine("Ấn enter để bỏ qua những trường không muốn thay đổi");
                 Console.WriteLine("Nhập tên sinh viên: ");
                 string name = Console.ReadLine();
-                if(name!="")
+                if (name != "")
                 {
                     student.Name = name;
                 }
-                Console.Write("Nhập giới tính(nam/nữ): ");
-                string sx = Console.ReadLine();
-                if(sx!= "")
+                Console.Write("Nhập giới tính(1: nam/ 0: nữ): ");
+                int sx = InputIntException();
+                while (CheckSx(sx))
                 {
-                    while (student.Sx != "nam" && student.Sx != "nữ")
-                    {
-                        Console.WriteLine("Sai. Nhập lại: ");
-                        student.Sx = Console.ReadLine();
-                    }
-                    student.Sx = sx;
-                }    
+                    Console.WriteLine("Sai. Nhập lại: ");
+                    sx = InputIntException();
+                }
+                student.Sx = sx == 0 ? "Nữ" : "Nam";
                 Console.WriteLine("Nhập tuổi sinh viên: ");
                 string age = Console.ReadLine();
                 if (age != "")
                 {
-                    while(!int.TryParse(age, out int value))
+                    while (!int.TryParse(age, out int value))
                     {
                         Console.Write("Sai. Nhập lại: ");
                         age = Console.ReadLine();
@@ -203,7 +208,7 @@ namespace StudentManager
                     }
                     student.PhisicalScore = double.Parse(phisical);
                 }
-                Console.WriteLine("Nhập điểm hóa: "); 
+                Console.WriteLine("Nhập điểm hóa: ");
                 string chemistry = Console.ReadLine();
                 if (chemistry != "")
                 {
@@ -245,11 +250,11 @@ namespace StudentManager
         {
             Console.WriteLine("Nhập id sinh viên: ");
             int id = InputIntException();
-            if(students.Find(s => s.Id == id)!=null)
+            if (students.Find(s => s.Id == id) != null)
             {
                 students.RemoveAll(s => s.Id == id);
                 Console.WriteLine($"Đã xóa sinh viên có id = {id} khỏi danh sách.");
-            } 
+            }
             else
             {
                 Console.WriteLine($"Sinh viên có id = {id} không tồn tại trong danh sách.");
@@ -262,7 +267,7 @@ namespace StudentManager
         {
             Console.WriteLine("Nhập tên sinh viên: ");
             string name = Console.ReadLine();
-            while(name=="")
+            while (name == "")
             {
 
                 Console.Write("Sai. Nhập lại: ");
@@ -281,7 +286,7 @@ namespace StudentManager
                 {
                     return -1;
                 }
-                else if(s.AvgScore > s1.AvgScore)
+                else if (s.AvgScore > s1.AvgScore)
                 {
                     return 1;
                 }
@@ -295,7 +300,7 @@ namespace StudentManager
         {
             students.Sort((s, s1) =>
             {
-                if (string.Compare(s.Name, s1.Name)>0)
+                if (string.Compare(s.Name, s1.Name) > 0)
                 {
                     return -1;
                 }
@@ -325,5 +330,5 @@ namespace StudentManager
             });
         }
     }
-    
+
 }
