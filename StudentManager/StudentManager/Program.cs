@@ -37,7 +37,7 @@ namespace StudentManager
             {
                 case 0: break;
                 case 1:
-                    students = s.InputListStudent();
+                    students = s.InputListStudent(students);
                     s.ShowListStudent(students);
                     Menu();
                     break;

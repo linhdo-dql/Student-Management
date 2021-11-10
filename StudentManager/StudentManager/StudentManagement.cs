@@ -58,6 +58,11 @@ namespace StudentManager
             }
             return student;
         }
+        /// <summary>
+        /// Kiểm tra giá trị nhập vào
+        /// </summary>
+        /// <param name="sx"></param>
+        /// <returns></returns>
         public bool CheckSx(int sx)
         {
             if(sx==1||sx==0)
@@ -126,9 +131,8 @@ namespace StudentManager
         /// Nhập 1 list sinh viên
         /// </summary>
         /// <returns></returns>
-        public List<Student> InputListStudent()
+        public List<Student> InputListStudent(List<Student> students)
         {
-            List<Student> students = new List<Student>();
             Console.WriteLine("Nhập số lượng nhân viên: ");
             int size = InputIntException();
             for (int i = 0; i < size; i++)
