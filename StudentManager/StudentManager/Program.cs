@@ -1,21 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace StudentManager
 {
     class Program
     {
-        List<Student> students = new List<Student>();
+        static List<Student> students = new List<Student>();
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Program p = new Program();
-            p.Menu();
+            Menu();
         }
-        public void Menu() 
+        public static void Menu() 
         {
-            
             StudentManagement s = new StudentManagement();
+            Menu:
             Console.WriteLine("-----------------------------*** Quản lý sinh viên ***-------------------------------");
             Console.WriteLine("1. Thêm sinh viên. ");
             Console.WriteLine("2. Cập nhật thông tin sinh viên bởi ID. ");
@@ -39,93 +38,69 @@ namespace StudentManager
                 case 1:
                     students = s.InputListStudent(students);
                     s.ShowListStudent(students);
-                    Menu();
-                    break;
+                    goto Menu;
                 case 2:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.UpdateStudentsById(students);
                         Console.WriteLine();
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 3:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.DeleteStudentById(students);
                         Console.WriteLine();
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 4:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.FindStudentByName(students);
                         Console.WriteLine();
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 5:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.SortStudentsByGPA(students);
                         s.ShowListStudent(students);
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 6:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.SortStudentsByName(students);
                         s.ShowListStudent(students);
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 7:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.SortStudentsById(students);
                         s.ShowListStudent(students);
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
                 case 8:
-                    if (students.Count != 0)
+                    if (Check())
                     {
                         s.ShowListStudent(students);
                     }
-                    else
-                    {
-                        Console.WriteLine("Chưa tạo Collections.");
-                    }
-                    Menu();
-                    break;
+                    goto Menu;
 
-                default: Menu(); break;
+                default: goto Menu;
+            }
+        }
+        public static bool Check()
+        {
+            if(students.Count != 0)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Chưa tạo Collections.");
+                return false;
             }
         }
     }
